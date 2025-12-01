@@ -8,7 +8,7 @@ export default function WelcomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.centerContainer}>
-        <Text style={styles.title}>Phone Roulette</Text>
+        <Text style={styles.title}>🔥 Hot Seat</Text>
         <Text style={styles.subtitle}>
           Pass the phone around and follow the prompt.
         </Text>

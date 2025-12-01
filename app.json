@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "phone-roulette",
-    "slug": "phone-roulette",
+    "name": "Hot Seat",
+    "slug": "hot-seat",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "phoneroulette",
+    "scheme": "hotseat",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
