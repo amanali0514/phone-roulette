@@ -1,4 +1,5 @@
 import { useGame } from '@/contexts/GameContext';
+import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -15,6 +16,8 @@ export default function VibeSelectionScreen() {
   const { selectVibe } = useGame();
 
   const handleSelectVibe = (vibeKey: string) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    
     if (vibeKey === 'nsfw') {
       Alert.alert(
         'NSFW Content',
