@@ -1,112 +1,137 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { useGame } from '@/contexts/GameContext';
+import { useRouter } from 'expo-router';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { Collapsible } from '@/components/ui/collapsible';
-import { ExternalLink } from '@/components/external-link';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Fonts } from '@/constants/theme';
+const VIBES = [
+  { key: 'chill', label: '😌 Chill', emoji: '😌' },
+  { key: 'chaotic', label: '🤪 Chaotic', emoji: '🤪' },
+  { key: 'toxic', label: '😈 Toxic Fun', emoji: '😈' },
+  { key: 'family', label: '👨‍👩‍👧 Family', emoji: '👨‍👩‍👧' },
+  { key: 'nsfw', label: '🔞 NSFW 18+', emoji: '🔞' },
+] as const;
 
-export default function TabTwoScreen() {
+export default function VibeSelectionScreen() {
+  const router = useRouter();
+  const { selectVibe } = useGame();
+
+  const handleSelectVibe = (vibeKey: string) => {
+    if (vibeKey === 'nsfw') {
+      Alert.alert(
+        'NSFW Content',
+        'This mode is for adults only. Are you over 18?',
+        [
+          { text: 'No', style: 'cancel' },
+          {
+            text: 'Yes',
+            style: 'default',
+            onPress: () => {
+              selectVibe(vibeKey as any);
+              router.push('/game');
+            },
+          },
+        ]
+      );
+      return;
+    }
+
+    selectVibe(vibeKey as any);
+    router.push('/game');
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText
-          type="title"
-          style={{
-            fontFamily: Fonts.rounded,
-          }}>
-          Explore
-        </ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image
-          source={require('@/assets/images/react-logo.png')}
-          style={{ width: 100, height: 100, alignSelf: 'center' }}
-        />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful{' '}
-          <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
-            react-native-reanimated
-          </ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+    <View style={styles.container}>
+      <View style={styles.centerContainer}>
+        <Text style={styles.title}>Choose Your Vibe</Text>
+        <Text style={styles.subtitle}>
+          Pick how wild you want the game to be.
+        </Text>
+
+        <View style={styles.vibeList}>
+          {VIBES.map((vibe) => (
+            <TouchableOpacity
+              key={vibe.key}
+              style={[
+                styles.vibeButton,
+                vibe.key === 'nsfw' ? styles.vibeButtonNSFW : null,
+              ]}
+              onPress={() => handleSelectVibe(vibe.key)}
+            >
+              <Text style={styles.vibeButtonText}>{vibe.label}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        <TouchableOpacity 
+          style={styles.secondaryButton} 
+          onPress={() => router.back()}
+        >
+          <Text style={styles.secondaryButtonText}>Back</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    flex: 1,
+    backgroundColor: '#050816',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
   },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
+  centerContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 36,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#A3A3A3',
+    textAlign: 'center',
+    marginBottom: 32,
+  },
+  vibeList: {
+    width: '100%',
+    marginTop: 16,
+  },
+  vibeButton: {
+    backgroundColor: '#111827',
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    borderRadius: 16,
+    marginBottom: 12,
+    borderWidth: 2,
+    borderColor: '#1F2937',
+  },
+  vibeButtonNSFW: {
+    borderColor: '#F87171',
+    backgroundColor: '#1F1111',
+  },
+  vibeButtonText: {
+    color: '#E5E7EB',
+    fontSize: 20,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  secondaryButton: {
+    paddingHorizontal: 32,
+    paddingVertical: 12,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: '#4B5563',
+    marginTop: 24,
+  },
+  secondaryButtonText: {
+    color: '#E5E7EB',
+    fontSize: 16,
+    fontWeight: '500',
+    textAlign: 'center',
   },
 });
