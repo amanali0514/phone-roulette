@@ -1,4 +1,5 @@
 import { useGame } from '@/contexts/GameContext';
+import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -23,6 +24,7 @@ export default function GameScreen() {
   }, []);
 
   const handleNextPrompt = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     const hasMore = getNextPrompt();
     if (!hasMore) {
       // Game ended - show end screen
@@ -50,6 +52,7 @@ export default function GameScreen() {
   };
 
   const handleChangeVibe = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     changeVibe();
     router.push('/(tabs)/explore');
   };
@@ -151,10 +154,11 @@ const styles = StyleSheet.create({
   },
   promptText: {
     color: '#F9FAFB',
-    fontSize: 24,
-    fontWeight: '600',
+    fontSize: 32,
+    fontWeight: '700',
     textAlign: 'center',
-    lineHeight: 36,
+    lineHeight: 44,
+    letterSpacing: 0.5,
   },
   buttonSection: {
     gap: 16,

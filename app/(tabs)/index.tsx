@@ -1,3 +1,4 @@
+import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -13,7 +14,10 @@ export default function WelcomeScreen() {
         </Text>
         <TouchableOpacity 
           style={styles.primaryButton} 
-          onPress={() => router.push('/(tabs)/explore')}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            router.push('/(tabs)/explore');
+          }}
         >
           <Text style={styles.primaryButtonText}>Start Game</Text>
         </TouchableOpacity>
