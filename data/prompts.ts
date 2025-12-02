@@ -1,4 +1,4 @@
-import { Vibe, PromptsDatabase } from "../types/game";
+import { PromptsDatabase, Vibe } from "../types/game";
 
 export const PROMPTS: PromptsDatabase = {
   chill: [
@@ -171,7 +171,7 @@ export const PROMPTS: PromptsDatabase = {
  * Get all prompts for a specific vibe
  */
 export const getPromptsForVibe = (vibe: Vibe): string[] => {
-  return PROMPTS[vibe] || [];
+  return PROMPTS[vibe as keyof PromptsDatabase] || [];
 };
 
 /**
