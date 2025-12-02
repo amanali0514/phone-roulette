@@ -13,7 +13,7 @@ const VIBES = [
 
 export default function VibeSelectionScreen() {
   const router = useRouter();
-  const { selectVibe } = useGame();
+  const { selectVibe, setIncludeNSFWInSurprise } = useGame();
 
   const handleSelectVibe = (vibeKey: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -32,6 +32,26 @@ export default function VibeSelectionScreen() {
               router.push('/game');
             },
           },
+        ]
+      );
+      return;
+    }
+
+    if (vibeKey === 'surprise') {
+      Alert.alert(
+        'Surprise Mode',
+        'Include NSFW prompts in the mix?',
+        [
+          { text: 'No', style: 'cancel', onPress: () => {
+            setIncludeNSFWInSurprise(false);
+            selectVibe('surprise' as any);
+            router.push('/game');
+          } },
+          { text: 'Yes', style: 'default', onPress: () => {
+            setIncludeNSFWInSurprise(true);
+            selectVibe('surprise' as any);
+            router.push('/game');
+          } },
         ]
       );
       return;
@@ -62,6 +82,14 @@ export default function VibeSelectionScreen() {
               <Text style={styles.vibeButtonText}>{vibe.label}</Text>
             </TouchableOpacity>
           ))}
+
+          {/* Surprise Mode mixes all vibes */}
+          <TouchableOpacity
+            style={[styles.vibeButton, styles.surpriseButton]}
+            onPress={() => handleSelectVibe('surprise')}
+          >
+            <Text style={styles.vibeButtonText}>🎲 Surprise Mode (Mix All)</Text>
+          </TouchableOpacity>
         </View>
 
         <TouchableOpacity 
