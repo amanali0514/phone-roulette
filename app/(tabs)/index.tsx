@@ -8,12 +8,27 @@ export default function WelcomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.centerContainer}>
-        <Text style={styles.title}>Phone Roulette</Text>
-        <Text style={styles.subtitle}>
+        <Text
+          accessibilityRole="header"
+          accessibilityLabel="Hot Seat"
+          maxFontSizeMultiplier={1.2}
+          style={styles.title}
+        >
+          <Text>{"🔥\u00A0"}</Text>
+          Hot Seat
+          <Text>{"\u00A0🪑"}</Text>
+        </Text>
+        <Text
+          maxFontSizeMultiplier={1.2}
+          style={styles.subtitle}
+        >
           Pass the phone around and follow the prompt.
         </Text>
-        <TouchableOpacity 
-          style={styles.primaryButton} 
+        <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityLabel="Start game"
+          accessibilityHint="Opens vibe selection"
+          style={styles.primaryButton}
           onPress={() => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
             router.push('/(tabs)/explore');

@@ -84,23 +84,6 @@ export type GameAction =
   | { type: "CANCEL_NSFW" };
 
 /**
- * Hook return type for useGameLogic
- */
-export interface UseGameLogicReturn {
-  state: GameState;
-  stats: GameStats;
-  actions: {
-    startGame: () => void;
-    selectVibe: (vibe: Vibe) => void;
-    nextPrompt: () => void;
-    changeVibe: () => void;
-    restartGame: () => void;
-    confirmNSFW: () => void;
-    cancelNSFW: () => void;
-  };
-}
-
-/**
  * NSFW confirmation state
  */
 export interface NSFWConfirmation {
