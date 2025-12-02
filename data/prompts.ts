@@ -1,4 +1,4 @@
-import { Vibe, PromptsDatabase } from "../types/game";
+import { PromptsDatabase, Vibe } from "../types/game";
 
 export const PROMPTS: PromptsDatabase = {
   chill: [
